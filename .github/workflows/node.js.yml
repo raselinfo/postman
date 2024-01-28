@@ -32,10 +32,11 @@ jobs:
           git config --global user.name "raselinfo"
       
       - name: Commit and Push Newman Report to GitHub Pages
-        run: |
-          git checkout -b gh-pages
-          git add newman/report.html
-          git commit -m "Add Newman report"
-          git push --set-upstream origin gh-pages
-      
+        run: ls
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./
+          branch: gh-pages
         
