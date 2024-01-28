@@ -21,10 +21,21 @@ jobs:
           name: newman-report
           path: newman/index.html
           
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: newman
-          branch: main
+      # - name: Deploy
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: newman
+      #     branch: main
+      - name: Configure Git
+        run: |
+          git config --global user.email "raselinfo52@gmail.com"
+          git config --global user.name "raselinfo"
+      
+      - name: Commit and Push Newman Report to GitHub Pages
+        run: |
+          git checkout -b gh-pages
+          git add newman/report.html
+          git commit -m "Add Newman report"
+          git push --set-upstream origin gh-pages
       
         
