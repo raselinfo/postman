@@ -25,4 +25,9 @@ jobs:
         run: newman run "${{secrets.collection_url}}" --env-var="baseUrl=${{secrets.baseUrl}}" -r htmlextra --reporter-htmlextra-export "newman/report.html"
       - name: see
         run: ls
-
+        
+      - name: Upload Newman Report to GitHub Pages
+        uses: actions/upload-artifact@v2
+        with:
+          name: newman-report
+          path: newman/report.html
