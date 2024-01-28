@@ -33,7 +33,7 @@ jobs:
       
       - name: Commit and Push Newman Report to GitHub Pages
         run: |
-          git checkout -b gh-pages
+          git checkout gh-pages
           git add newman/report.html
           git commit -m "Add Newman report"
           git push --set-upstream origin gh-pages
