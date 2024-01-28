@@ -23,4 +23,6 @@ jobs:
         
       - name: Generate HTML Report
         run: newman run "${{secrets.collection_url}}" --env-var="baseUrl=${{secrets.baseUrl}}" --reporters cli,htmlextra --reporter-htmlextra-export "newman/report.html"
+      - name: see
+        run: ls && cd newman && ls
 
