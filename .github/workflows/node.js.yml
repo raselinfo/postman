@@ -20,4 +20,7 @@ jobs:
       
       - name: Run API Collection
         run: newman run "${{secrets.collection_url}}" --env-var="baseUrl=${{secrets.baseUrl}}"
+        
+      - name: Generate HTML Report
+        run: newman run "${{secrets.collection_url}}" --env-var="baseUrl=${{secrets.baseUrl}}" --reporters cli,htmlextra --reporter-htmlextra-export "newman/report.html"
 
