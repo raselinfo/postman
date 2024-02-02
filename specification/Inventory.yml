@@ -1,0 +1,256 @@
+openapi: 3.0.0
+info:
+    title: Inventory
+    description: |
+        This is the Product Inventory Service
+    version: 1.0.1
+
+servers:
+    - url: http://localhost:4001
+
+paths:
+    /api/v1/health:
+        get:
+            summary: Check server health
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Your server is healty
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+    
+        
+
+    /api/v1/products:
+        post:
+            summary: Create New Product
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Create_Product"
+            responses:
+                201:
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Product"
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+        get:
+            summary: Retrive list of products
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                    products:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Product"
+                                            
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+
+
+    /api/v1/products/{productId}:
+        get:
+            summary: Retrive a product by id
+            parameters:
+                - in: path
+                  name: productId
+                  required: true
+                  schema:
+                    type: string
+                    example: "78d17df3-ce6b-4be6-b029-76639ae086e1"
+                  description: The Id of the product to retrive.
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Product"
+                
+                404:
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Not_Found"
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+        
+        put:
+            summary: Update a product by ID
+            parameters:
+                - in: path
+                  name: productId
+                  required: true
+                  schema:
+                    type: string
+                    example: "78d17df3-ce6b-4be6-b029-76639ae086e1"
+                  description: The ID of the product to update
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: Gloves
+                                price:
+                                    type: number
+                                    example: 26.8
+                                quantity:
+                                    type: integer
+                                    example: 40
+            responses:
+                201:
+                    description: Update successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Product"
+                404:
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Not_Found"
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+
+        delete:
+            summary: Delete product by ID
+            parameters:
+                - in: path
+                  name: productId
+                  required: true
+                  schema:
+                    type: string
+                    example: "78d17df3-ce6b-4be6-b029-76639ae086e1"
+                  description: ID for delete product
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Success  
+                404:
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Not_Found"
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+
+                    
+         
+                              
+    
+
+
+components:
+    schemas:
+        Internal_Server_Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: Internal Server Error
+
+            
+        Not_Found:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: Product Not Found
+        Product:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "78d17df3-ce6b-4be6-b029-76639ae086e1"
+                name:
+                    type: string
+                    example: "Sausages"
+                quantity:
+                    type: integer
+                    example: 162
+                price:
+                    type: number
+                    example: 166.18
+                createdBy:
+                    type: string
+                    example: "59edaab2-541d-4897-84fe-3dffe406dbe2"
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-01-24T16:06:39.193Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-01-24T16:06:39.193Z"
+        Create_Product:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: "Gloves"
+                price:
+                    type: number
+                    example: 501.34
+                quantity:
+                    type: integer
+                    example: 21
+                userID:
+                    type: string
+                    example: "03145490-4614-42cf-ad49-a598da44858a"

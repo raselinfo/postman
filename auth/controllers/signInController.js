@@ -11,7 +11,11 @@ const signINController = async (req, res, next) => {
 
     res.status(200).json({token})
   } catch (err) {
-    next(err);
+    const error = new Error(err.message);
+    error.status = err.status;
+
+    next(error);
+
   }
 };
 

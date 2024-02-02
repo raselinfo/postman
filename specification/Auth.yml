@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+    title: Authentication Service
+    version: 1.0.0
+servers:
+    - url: http://localhost:4005
+
+tags:
+    - name: Signup
+    - name: Signin
+    - name: Checkpoint
+
+paths:
+    /api/v1/singup:
+        post:
+            summary: User Signup
+            tags:
+                - Signup
+            requestBody:
+                required: true
+                content: 
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                email:
+                                    type: string
+                                    format: email
+                                password:
+                                    type: string
+                                    minLength: 8
+                            required:
+                                - name
+                                - email
+                                - password
+            responses:
+                201:
+                    description: User Created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: User Created successfully
+                                    links:
+                                        type: object
+                                        properties:
+                                            signIn:
+                                                type: string
+                                                example: "${BASE_URL}/api/v1/signin"
+                
+                400:
+                    description: Bad requestBody
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Name, Email and Password is required!
+                409:
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Email already exists!
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+    
+    /api/v1/signin:
+        post:
+            summary: User signIn
+            tags:
+                - Signin
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+                                password:
+                                    type: string
+                                    minLength: 8
+                            required:
+                                - email
+                                - password
+
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                                        example: "JWT_TOKEN"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "Password is incorrect!"
+                404:
+                    description: User Not Found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "User not found!"
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+
+    /api/v1/checkpoint:
+           post:
+            summary: Checkpoint for authenticated access
+            security:
+                - bearerAuth: []
+            tags:
+                - Checkpoint
+            responses:
+                200:
+                    description: Access Granted
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "Access Granted"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    mesage:
+                                        type: string
+                                        example: "Access denied. No token provided."
+                500:
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Internal_Server_Error"
+
+            
+
+
+
+
+components:
+    schemas:
+        Internal_Server_Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: "Internal Server Error"
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+

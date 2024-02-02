@@ -20,7 +20,7 @@ app.get("/",(req,res)=>{
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-  console.log(err)
+  console.log("Error>>>.",err)
   res.status(err.status || 500).json({
     message: err.message || "Something went wrong!",
   });

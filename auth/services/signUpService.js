@@ -2,8 +2,11 @@ const prisma = require("../utils/prisma");
 const Password = require("../utils/Password");
 
 const signUpService = async ({ name, email, password }) => {
+  const error=new Error("Something went wrong!");
   if (!name || !email || !password) {
-    throw new Error("Name, Email and Password is required!");
+    error.message="Name, Email and Password is required!"
+    error.status=400;
+    throw error
   }
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -13,8 +16,8 @@ const signUpService = async ({ name, email, password }) => {
 
 
   if (existingUser) {
-    const error=new Error("Email already exists!");
-    error.statusCode=409;
+    error.message="Email already exists!"
+    error.status=409;
     throw error
   }
   const hasedPassword =await Password.hash(password);
@@ -27,7 +30,9 @@ const signUpService = async ({ name, email, password }) => {
     },
   });
   if (!user) {
-    throw new Error("User not created!");
+    error.message="User not created!"
+    error.status=500;
+    throw error
   }
 
   return {

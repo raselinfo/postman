@@ -2,8 +2,11 @@ const Jwt = require("../utils/Jwt");
 const Password = require("../utils/Password");
 const prisma = require("../utils/prisma");
 const signInService = async ({ email, password }) => {
+  const error = new Error("Something went wrong!");
   if (!email || !password) {
-    throw new Error("Email and Password is required!");
+    error.message = "Email and Password is required!";
+    error.status = 400;
+    throw error
   }
 
   const existingUser = await prisma.user.findUnique({
@@ -13,14 +16,16 @@ const signInService = async ({ email, password }) => {
   });
 
   if (!existingUser) {
-    const error=new Error("Email not found!");
-    error.statusCode=404;
+    error.message = "User not found!";
+    error.status=404;
     throw error
   }
 
   const isValidPassword =await Password.verify(password, existingUser.password);
   if (!isValidPassword) {
-    throw new Error("Password is incorrect!");
+    error.message = "Password is incorrect!";
+    error.status=401;
+    throw error
   }
 
   const token = Jwt.signAccessToken({
