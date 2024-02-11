@@ -13,7 +13,7 @@ const PORT=process.env.PORT || 4005
 app.use("/api/v1", authRouter);
 
 
-app.get("/",(req,res)=>{
+app.get("/api/v1/health",(req,res)=>{
   res.status(200).json({message:"Your server is healthy"})
 })
 

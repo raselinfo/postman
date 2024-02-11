@@ -36,7 +36,7 @@ const signInService = async ({ email, password }) => {
 
   
 
-  return token;
+  return {token,userId:  existingUser.id};
 };
 
 module.exports = signInService;

@@ -9,7 +9,7 @@ const signINController = async (req, res, next) => {
       throw new Error('Invalid credentials')
     }
 
-    res.status(200).json({token})
+    res.status(200).json(token)
   } catch (err) {
     const error = new Error(err.message);
     error.status = err.status;

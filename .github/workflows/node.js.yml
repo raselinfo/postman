@@ -1,20 +1,17 @@
 name: Automated API tests using Postman CLI
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  
 
 jobs:
   automated-api-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # - name: Install Postman CLI
-      #   run: |
-      #     curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      # - name: Login to Postman CLI
-      #   run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      # - name: Run API tests
-      #   run: |
-      #     postman collection run "32401078-74f9a306-5807-43a7-ba21-182efd8eb538" -e "32401078-dbad1461-f142-4248-8223-e990fea0cb36"
+
       - name: Intall Newman
         run: npm install -g newman newman-reporter-htmlextra
       
