@@ -28,3 +28,9 @@ jobs:
       - name: see
         run: ls
 
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: newman-report
+          path: newman/report.html
+
