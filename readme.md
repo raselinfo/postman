@@ -16,9 +16,9 @@ Delete Product [id] (Delete): http://localhost:4001/api/v1/products/:productId
 
 <!-- Authorization Server Credential for Authorization-Code-Flow -->
 
-Token Endpoint: https://dev-mh5yy0530kzifbg6.us.auth0.com/oauth/token
+Token Endpoint: https://dev-mh5yy05347347fbg6.us.auth0.com/oauth/token
 
-Auth Endpoint: https://dev-mh5yy0530kzifbg6.us.auth0.com/oauth/authorize
+Auth Endpoint: https://dev-mh5yy0etwetwetfbg6.us.auth0.com/oauth/authorize
 
 Client ID: yHpmDs1jPO4634343NMlJ2oess
 
