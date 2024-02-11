@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "96919ff9-20ba-4354-b855-768a188c649d",
+		"name": "Data-Driven-Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32401078",
+		"_collection_link": "https://dark-comet-962105.postman.co/workspace/toto-company~e4cc4e92-29fb-4ee3-b611-772e6cd9a6f6/collection/32401078-96919ff9-20ba-4354-b855-768a188c649d?action=share&source=collection_link&creator=32401078"
+	},
+	"item": [
+		{
+			"name": "Create Porduct",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const productName=pm.iterationData.get(\"product_name\")\r",
+							"const productPrice=pm.iterationData.get(\"product_price\")\r",
+							"const productQuantity=pm.iterationData.get(\"product_quantity\")\r",
+							"const userID=pm.iterationData.get(\"userID\")\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\",productName),\r",
+							"pm.collectionVariables.set(\"price\",productPrice)\r",
+							"pm.collectionVariables.set(\"quantity\",productQuantity)\r",
+							"pm.collectionVariables.set(\"userid\",userID)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const product = response.product\r",
+							"\r",
+							"const name = pm.iterationData.get(\"product_name\")\r",
+							"const price = pm.iterationData.get(\"product_price\")\r",
+							"const quantity = pm.iterationData.get(\"product_quantity\")\r",
+							"const userId = pm.iterationData.get(\"userID\")\r",
+							"\r",
+							"\r",
+							"pm.test(\"it should return status code 201 Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"productId\", response.product.id)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response has a success message\", function () {\r",
+							"    pm.expect(response.message).to.equal(\"Success\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"product object is present\", function () {\r",
+							"    pm.expect(response).to.have.property(\"product\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"is should validate the response body with the collection varialbes\", () => {\r",
+							"    pm.expect(product.name).to.be.equal(name)\r",
+							"    pm.expect(product.price).to.be.equal(price)\r",
+							"    pm.expect(product.quantity).to.be.equal(quantity)\r",
+							"    pm.expect(product.createdBy).to.be.equal(userId)\r",
+							"\r",
+							"    pm.collectionVariables.set(\"productId\",product.id)\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.unset(\"name\"),\r",
+							"pm.collectionVariables.unset(\"price\")\r",
+							"pm.collectionVariables.unset(\"quantity\")\r",
+							"pm.collectionVariables.unset(\"userid\")\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"price\": {{price}},\r\n    \"quantity\": {{quantity}},\r\n    \"userID\": \"{{userid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/products",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "productId",
+			"value": ""
+		}
+	]
+}

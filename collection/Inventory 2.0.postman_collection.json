@@ -1,0 +1,966 @@
+{
+	"info": {
+		"_postman_id": "8972932a-601a-4678-85b4-03ccc85f1ae8",
+		"name": "Inventory 2.0",
+		"description": "This is the Product Inventory Service\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32401078",
+		"_collection_link": "https://dark-comet-962105.postman.co/workspace/toto-company~e4cc4e92-29fb-4ee3-b611-772e6cd9a6f6/collection/32401078-8972932a-601a-4678-85b4-03ccc85f1ae8?action=share&source=collection_link&creator=32401078"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "health",
+							"item": [
+								{
+									"name": "Check server health",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "x-mock-response-code",
+												"value": "500",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/health",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"health"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "200 OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/health",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"health"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Your server is healthy\"\n}"
+										},
+										{
+											"name": "500 Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/health",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"health"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Internal Server Error\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "products",
+							"item": [
+								{
+									"name": "{productId}",
+									"item": [
+										{
+											"name": "Retrive a product by id",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "x-mock-response-code",
+														"value": "200",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products/:productId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products",
+														":productId"
+													],
+													"variable": [
+														{
+															"key": "productId",
+															"value": "111",
+															"description": "(Required) The Id of the product to retrive."
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "200 OK",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "111"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"message\": \"Success\",\n    \"product\": {\n        \"id\": \"abbbd318-2388-430b-bc81-df360f38376b\",\n        \"name\": \"Hat\",\n        \"quantity\": 891,\n        \"price\": 294.07,\n        \"createdBy\": \"c4bbddcb-4cea-4cad-8b4b-87663ad5d831\",\n        \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n        \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n    }\n}"
+												},
+												{
+													"name": "404 Not Found",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "222"
+																}
+															]
+														}
+													},
+													"status": "Not Found",
+													"code": 404,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Product Not Found\"\n}"
+												},
+												{
+													"name": "500 Internal Server Error",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "111"
+																}
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Internal Server Error\"\n}"
+												}
+											]
+										},
+										{
+											"name": "Update a product by ID",
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "x-mock-response-code",
+														"value": "500",
+														"type": "text",
+														"disabled": true
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"{{$randomProduct}}\",\n  \"price\": {{$randomPrice}},\n  \"quantity\": {{$randomInt}}\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products/:productId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products",
+														":productId"
+													],
+													"variable": [
+														{
+															"key": "productId",
+															"value": "111",
+															"description": "(Required) The ID of the product to update"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "201 Created",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"{{$randomProduct}}\",\n  \"price\": {{$randomPrice}},\n  \"quantity\": {{$randomInt}}\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "111"
+																}
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"message\": \"Update Success\",\n    \"product\": {\n        \"id\": \"{{$guid}}\",\n        \"name\": \"{{$body 'name'}}\",\n        \"quantity\": {{$body 'quantity'}},\n        \"price\": {{$body 'price'}},\n        \"createdBy\": \"{{$guid}}\",\n        \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n        \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n    }\n}"
+												},
+												{
+													"name": "401 Unauthorized",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"{{$randomProduct}}\",\n  \"price\": {{$randomPrice}},\n  \"quantity\": {{$randomInt}}\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": ""
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"message\": \"Unauthorized\"\n}"
+												},
+												{
+													"name": "404 Not Found",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"<string>\",\n  \"price\": \"<number>\",\n  \"quantity\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": ""
+																}
+															]
+														}
+													},
+													"status": "Not Found",
+													"code": 404,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Product Not Found\"\n}"
+												},
+												{
+													"name": "500 Internal Server Error",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"<string>\",\n  \"price\": \"<number>\",\n  \"quantity\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": ""
+																}
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Internal Server Error\"\n}"
+												}
+											]
+										},
+										{
+											"name": "Delete product by ID",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "x-mock-response-code",
+														"value": "500",
+														"type": "text",
+														"disabled": true
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products/:productId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products",
+														":productId"
+													],
+													"variable": [
+														{
+															"key": "productId",
+															"value": "111",
+															"description": "(Required) ID for delete product"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "200 OK",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "111"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"message\": \"Delete Success\",\n    \"product\": {\n        \"id\": \"53e4fc38-527f-4ac4-a24f-58638678ac7f\",\n        \"name\": \"Hat\",\n        \"quantity\": 419,\n        \"price\": 38.68,\n        \"createdBy\": \"6a3d5663-902e-46a6-bf74-794c25a66052\",\n        \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n        \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n    }\n}"
+												},
+												{
+													"name": "404 Not Found",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": "222"
+																}
+															]
+														}
+													},
+													"status": "Not Found",
+													"code": 404,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Product Not Found\"\n}"
+												},
+												{
+													"name": "500 Internal Server Error",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:productId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":productId"
+															],
+															"variable": [
+																{
+																	"key": "productId",
+																	"value": ""
+																}
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"message\": \"Internal Server Error\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Create New Product",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"{{$randomProduct}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"userID\": \"{{$guid}}\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/products",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "201 Created",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"price\": \"<number>\",\n  \"quantity\": \"<integer>\",\n  \"userID\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Success\",\n    \"product\": {\n        \"id\": \"{{$guid}}\",\n        \"name\": \"{{$body 'name'}}\",\n        \"quantity\": \"{{$body 'quantity'}}\",\n        \"price\": \"{{$body 'price'}}\",\n        \"createdBy\": \"{{$body 'userID}}\",\n        \"createdAt\": \"{{$randomDateRecent}}\",\n        \"updatedAt\": \"null\"\n    }\n}"
+										},
+										{
+											"name": "500 Internal Server Error",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"price\": \"<number>\",\n  \"quantity\": \"<integer>\",\n  \"userID\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"message\": \"Internal Server Error\"\n}"
+										}
+									]
+								},
+								{
+									"name": "Retrive list of products",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/products",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "200 OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Success\",\n    \"products\": [\n        {\n            \"id\": \"41db6c42-b526-46e6-b636-0e74933a700d\",\n            \"name\": \"rasel\",\n            \"quantity\": 66,\n            \"price\": 55,\n            \"createdBy\": \"faffaafasfasfaf\",\n            \"createdAt\": \"2024-02-10T13:54:02.890Z\",\n            \"updatedAt\": \"2024-02-10T13:54:02.890Z\"\n        },\n        {\n            \"id\": \"ffc0785b-2568-4a3f-b5d3-d831c487c54a\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:01:49.705Z\",\n            \"updatedAt\": \"2024-02-10T14:01:49.705Z\"\n        },\n        {\n            \"id\": \"305d2c62-1441-4262-bae2-10da5c795357\",\n            \"name\": \"46346\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"457\",\n            \"createdAt\": \"2024-02-10T14:01:49.855Z\",\n            \"updatedAt\": \"2024-02-10T14:01:49.855Z\"\n        },\n        {\n            \"id\": \"775ad8fb-bcd6-4687-8c91-1f138090c39d\",\n            \"name\": \"dev\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:07:17.150Z\",\n            \"updatedAt\": \"2024-02-10T14:07:17.150Z\"\n        },\n        {\n            \"id\": \"5b517f86-664d-4f30-b855-324ded0bba6a\",\n            \"name\": \"dev\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"457\",\n            \"createdAt\": \"2024-02-10T14:07:17.311Z\",\n            \"updatedAt\": \"2024-02-10T14:07:17.311Z\"\n        },\n        {\n            \"id\": \"36354379-3270-47ff-a611-72bd334a6e84\",\n            \"name\": \"dev\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:10:27.836Z\",\n            \"updatedAt\": \"2024-02-10T14:10:27.836Z\"\n        },\n        {\n            \"id\": \"3d99aaf5-0355-4c36-9e5e-9c8fbcfdc0d9\",\n            \"name\": \"dev\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"457\",\n            \"createdAt\": \"2024-02-10T14:10:28.003Z\",\n            \"updatedAt\": \"2024-02-10T14:10:28.003Z\"\n        },\n        {\n            \"id\": \"ba61912f-a4e8-459b-8a0c-a6193bc2d5f4\",\n            \"name\": \"dev\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"57457\",\n            \"createdAt\": \"2024-02-10T14:10:28.176Z\",\n            \"updatedAt\": \"2024-02-10T14:10:28.176Z\"\n        },\n        {\n            \"id\": \"338c0d8d-962e-459a-a1e0-18604a9b37d6\",\n            \"name\": \"dev\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:12:20.026Z\",\n            \"updatedAt\": \"2024-02-10T14:12:20.026Z\"\n        },\n        {\n            \"id\": \"cd7deaa5-72a3-407a-a6f6-be91f704db5c\",\n            \"name\": \"dev\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:12:20.186Z\",\n            \"updatedAt\": \"2024-02-10T14:12:20.186Z\"\n        },\n        {\n            \"id\": \"816a0f48-4bcd-4153-b201-2065f71c4eac\",\n            \"name\": \"dev\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:12:20.296Z\",\n            \"updatedAt\": \"2024-02-10T14:12:20.296Z\"\n        },\n        {\n            \"id\": \"07182c7a-5754-4a9b-8485-e3a123ae18ee\",\n            \"name\": \"dev\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:12:20.421Z\",\n            \"updatedAt\": \"2024-02-10T14:12:20.421Z\"\n        },\n        {\n            \"id\": \"e2ef1c3d-66aa-4947-ac1f-18cf38e43bba\",\n            \"name\": \"dev\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:12:20.557Z\",\n            \"updatedAt\": \"2024-02-10T14:12:20.557Z\"\n        },\n        {\n            \"id\": \"c2e8f3ce-ff91-49ee-bde0-661a13ea02a0\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:13:41.136Z\",\n            \"updatedAt\": \"2024-02-10T14:13:41.136Z\"\n        },\n        {\n            \"id\": \"30064950-9913-43d6-a362-99448cf10374\",\n            \"name\": \"46346\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"457\",\n            \"createdAt\": \"2024-02-10T14:13:41.275Z\",\n            \"updatedAt\": \"2024-02-10T14:13:41.275Z\"\n        },\n        {\n            \"id\": \"4c9cbd4a-cae2-44aa-8bf1-a03cf55d6691\",\n            \"name\": \"574357\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"57457\",\n            \"createdAt\": \"2024-02-10T14:13:41.434Z\",\n            \"updatedAt\": \"2024-02-10T14:13:41.434Z\"\n        },\n        {\n            \"id\": \"db93daf9-b90c-40fb-84bf-f63ef1059b23\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:15:38.310Z\",\n            \"updatedAt\": \"2024-02-10T14:15:38.310Z\"\n        },\n        {\n            \"id\": \"856bb648-603d-4b76-a185-33b7f6bcb141\",\n            \"name\": \"Apple\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:23.441Z\",\n            \"updatedAt\": \"2024-02-10T14:16:23.441Z\"\n        },\n        {\n            \"id\": \"ae5e91c3-16b6-4e15-8a43-a5ec1e1609dd\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:23.605Z\",\n            \"updatedAt\": \"2024-02-10T14:16:23.605Z\"\n        },\n        {\n            \"id\": \"543507fd-788b-48ae-ad5a-7a32077155fc\",\n            \"name\": \"Banana\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:23.770Z\",\n            \"updatedAt\": \"2024-02-10T14:16:23.770Z\"\n        },\n        {\n            \"id\": \"795b3ce7-3f17-4577-849a-ef28e0e84828\",\n            \"name\": \"Mango\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:23.920Z\",\n            \"updatedAt\": \"2024-02-10T14:16:23.920Z\"\n        },\n        {\n            \"id\": \"24b00e9a-4a7f-435e-850f-52055446796e\",\n            \"name\": \"Grapes\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:24.074Z\",\n            \"updatedAt\": \"2024-02-10T14:16:24.074Z\"\n        },\n        {\n            \"id\": \"8b245f32-efea-4b17-888b-9a7131f8265e\",\n            \"name\": \"Apple\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:51.985Z\",\n            \"updatedAt\": \"2024-02-10T14:16:51.985Z\"\n        },\n        {\n            \"id\": \"82eda328-f28b-46e1-8871-d9a8c1c4e120\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:52.158Z\",\n            \"updatedAt\": \"2024-02-10T14:16:52.158Z\"\n        },\n        {\n            \"id\": \"92164dda-abb9-4ede-a653-e76e575d5bdc\",\n            \"name\": \"Banana\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:52.307Z\",\n            \"updatedAt\": \"2024-02-10T14:16:52.307Z\"\n        },\n        {\n            \"id\": \"34fab803-1ea4-4249-b0a4-6ecf724bd90a\",\n            \"name\": \"Mango\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:52.458Z\",\n            \"updatedAt\": \"2024-02-10T14:16:52.458Z\"\n        },\n        {\n            \"id\": \"d9b819ca-d59f-4b93-bbcc-b3bbcbba91e6\",\n            \"name\": \"Grapes\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:16:52.613Z\",\n            \"updatedAt\": \"2024-02-10T14:16:52.613Z\"\n        },\n        {\n            \"id\": \"ce5890c0-3e1e-4740-91e9-a0308a24bddb\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:17:05.667Z\",\n            \"updatedAt\": \"2024-02-10T14:17:05.667Z\"\n        },\n        {\n            \"id\": \"6f36eaa4-919e-407f-aca4-03dda7b0c497\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:17:34.206Z\",\n            \"updatedAt\": \"2024-02-10T14:17:34.206Z\"\n        },\n        {\n            \"id\": \"4e1a4c0b-5750-4235-a9a6-6d945bbe1099\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:17:50.359Z\",\n            \"updatedAt\": \"2024-02-10T14:17:50.359Z\"\n        },\n        {\n            \"id\": \"d3813ae4-0266-49f7-bc38-57875c8267b2\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:19:00.534Z\",\n            \"updatedAt\": \"2024-02-10T14:19:00.534Z\"\n        },\n        {\n            \"id\": \"90692353-50d8-467f-a225-e0aff2bf8dae\",\n            \"name\": \"Apple\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:20:58.976Z\",\n            \"updatedAt\": \"2024-02-10T14:20:58.976Z\"\n        },\n        {\n            \"id\": \"63fa9a25-2940-424f-998c-9328adc39e05\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:20:59.144Z\",\n            \"updatedAt\": \"2024-02-10T14:20:59.144Z\"\n        },\n        {\n            \"id\": \"5ac2e764-7677-45f7-86ad-da042c8482e7\",\n            \"name\": \"Banana\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:20:59.303Z\",\n            \"updatedAt\": \"2024-02-10T14:20:59.303Z\"\n        },\n        {\n            \"id\": \"c2191a43-73d2-4558-ad6e-c3000160a054\",\n            \"name\": \"Mango\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:20:59.456Z\",\n            \"updatedAt\": \"2024-02-10T14:20:59.456Z\"\n        },\n        {\n            \"id\": \"9c86d34b-1e5c-4eda-a8bf-0aa50040a2ba\",\n            \"name\": \"Grapes\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:20:59.580Z\",\n            \"updatedAt\": \"2024-02-10T14:20:59.580Z\"\n        },\n        {\n            \"id\": \"bf629e60-b5af-465d-9f71-85ecd79fa00b\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:25:38.743Z\",\n            \"updatedAt\": \"2024-02-10T14:25:38.743Z\"\n        },\n        {\n            \"id\": \"3d7e0c96-170d-4ad6-a25a-9e1bfd3e2f1c\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T14:26:45.094Z\",\n            \"updatedAt\": \"2024-02-10T14:26:45.094Z\"\n        },\n        {\n            \"id\": \"c4bc7faa-c68e-4732-96ae-4442450a952b\",\n            \"name\": \"Table\",\n            \"quantity\": 697,\n            \"price\": 76.63,\n            \"createdBy\": \"adc11962-2203-474b-b606-c17f29a840d0\",\n            \"createdAt\": \"2024-02-10T16:32:34.864Z\",\n            \"updatedAt\": \"2024-02-10T16:32:34.864Z\"\n        },\n        {\n            \"id\": \"80f2b68b-1ba2-41d1-ae67-574ec7d4a457\",\n            \"name\": \"Apple\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:38:41.798Z\",\n            \"updatedAt\": \"2024-02-10T17:38:41.798Z\"\n        },\n        {\n            \"id\": \"fad6b735-8e36-4e61-8e47-350dcc5e4a65\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:38:42.111Z\",\n            \"updatedAt\": \"2024-02-10T17:38:42.111Z\"\n        },\n        {\n            \"id\": \"62809c61-8322-4ec0-b358-3ee37ec1d8f2\",\n            \"name\": \"Banana\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:38:42.280Z\",\n            \"updatedAt\": \"2024-02-10T17:38:42.280Z\"\n        },\n        {\n            \"id\": \"0123634e-390c-4f29-aafa-8c7aa4a15c9a\",\n            \"name\": \"Mango\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:38:42.461Z\",\n            \"updatedAt\": \"2024-02-10T17:38:42.461Z\"\n        },\n        {\n            \"id\": \"61f741cf-edef-46fe-a68e-7021aa12b966\",\n            \"name\": \"Grapes\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:38:42.660Z\",\n            \"updatedAt\": \"2024-02-10T17:38:42.660Z\"\n        },\n        {\n            \"id\": \"31ce762b-f9d6-41ff-97ce-702e7bc90857\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:40:32.630Z\",\n            \"updatedAt\": \"2024-02-10T17:40:32.630Z\"\n        },\n        {\n            \"id\": \"1b3ee9cd-faa3-4ef1-a0db-25948bcb96ad\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:40:55.324Z\",\n            \"updatedAt\": \"2024-02-10T17:40:55.324Z\"\n        },\n        {\n            \"id\": \"c7b7e467-ba9f-4149-bfd4-d2f1d1b01ae7\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:28.042Z\",\n            \"updatedAt\": \"2024-02-10T17:42:28.042Z\"\n        },\n        {\n            \"id\": \"68452ddf-2cc0-4564-9709-125ff73d1d13\",\n            \"name\": \"Apple\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:47.793Z\",\n            \"updatedAt\": \"2024-02-10T17:42:47.793Z\"\n        },\n        {\n            \"id\": \"6cff561c-6c2c-47e9-9d32-2dc8f4330f8b\",\n            \"name\": \"Orange\",\n            \"quantity\": 20,\n            \"price\": 200,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:47.977Z\",\n            \"updatedAt\": \"2024-02-10T17:42:47.977Z\"\n        },\n        {\n            \"id\": \"ddf91241-9288-404b-95ba-9e03d7904a30\",\n            \"name\": \"Banana\",\n            \"quantity\": 30,\n            \"price\": 300,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:48.160Z\",\n            \"updatedAt\": \"2024-02-10T17:42:48.160Z\"\n        },\n        {\n            \"id\": \"b60ef269-88f3-4379-981a-983dce110a1a\",\n            \"name\": \"Mango\",\n            \"quantity\": 40,\n            \"price\": 400,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:48.363Z\",\n            \"updatedAt\": \"2024-02-10T17:42:48.363Z\"\n        },\n        {\n            \"id\": \"4440b2d8-c09d-436f-b4c9-70de4b0cf56f\",\n            \"name\": \"Grapes\",\n            \"quantity\": 50,\n            \"price\": 500,\n            \"createdBy\": \"5f9b0b9d9c9b6e1b7c9b9c9b\",\n            \"createdAt\": \"2024-02-10T17:42:48.685Z\",\n            \"updatedAt\": \"2024-02-10T17:42:48.685Z\"\n        },\n        {\n            \"id\": \"377031d7-58e5-4072-8a06-e6a34e76648a\",\n            \"name\": \"Car\",\n            \"quantity\": 442,\n            \"price\": 551.39,\n            \"createdBy\": \"adc11962-2203-474b-b606-c17f29a840d0\",\n            \"createdAt\": \"2024-02-11T09:46:39.380Z\",\n            \"updatedAt\": \"2024-02-11T09:46:39.380Z\"\n        }\n    ]\n}"
+										},
+										{
+											"name": "500 Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/products",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"products"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"message\": \"Internal server Erro\"\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:4001"
+		}
+	]
+}

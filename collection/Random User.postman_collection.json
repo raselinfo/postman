@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "691cb185-9009-4706-9d79-212d4fd76ab9",
+		"name": "Random User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32401078",
+		"_collection_link": "https://dark-comet-962105.postman.co/workspace/toto-company~e4cc4e92-29fb-4ee3-b611-772e6cd9a6f6/collection/32401078-691cb185-9009-4706-9d79-212d4fd76ab9?action=share&source=collection_link&creator=32401078"
+	},
+	"item": [
+		{
+			"name": "Random Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response=pm.response.json().results\r",
+							"\r",
+							"pm.collectionVariables.set(\"gender\",response[0].gender)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://randomuser.me/api",
+					"protocol": "https",
+					"host": [
+						"randomuser",
+						"me"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Random Female User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://randomuser.me/api/?gender={{gender}}",
+					"protocol": "https",
+					"host": [
+						"randomuser",
+						"me"
+					],
+					"path": [
+						"api",
+						""
+					],
+					"query": [
+						{
+							"key": "gender",
+							"value": "{{gender}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "gender",
+			"value": ""
+		}
+	]
+}

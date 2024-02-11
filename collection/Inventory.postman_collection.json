@@ -1,0 +1,1027 @@
+{
+	"info": {
+		"_postman_id": "8598a3fd-12fd-49cf-88a8-17fe33d30186",
+		"name": "Inventory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32401078",
+		"_collection_link": "https://dark-comet-962105.postman.co/workspace/toto-company~e4cc4e92-29fb-4ee3-b611-772e6cd9a6f6/collection/32401078-8598a3fd-12fd-49cf-88a8-17fe33d30186?action=share&source=collection_link&creator=32401078"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response=pm.response.json()\r",
+							"\r",
+							"pm.test(\"it should respond valid status code\",()=>{\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,500])\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"it should response 'Your server is healthy' message\",()=>{\r",
+							"    pm.expect(response).to.be.have.property(\"message\")\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"    pm.expect(response.message).to.be.equal(\"Your server is healthy\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/health",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"health"
+					]
+				},
+				"description": "This endpoint makes an HTTP GET request to retrieve the health status of the API. The response will include a JSON object with a \"message\" key.\n\n### Response\n\n- Status: 200\n- Content-Type: application/json\n    \n\n#### Example\n\n```\n{\n    \"message\": \"\"\n}\n\n ```"
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/health",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"health"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-m4bOc19wzCbjvr4QZzo/8XB/ino\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:08:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Your server is healthy\"\n}"
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/health",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"health"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24-m4bOc19wzCbjvr4QZzo/8XB/ino\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:08:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Internal Server Error\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const authHeader = pm.request.headers.get(\"Authorization\")\r",
+							"\r",
+							"pm.test(\"it should respond valid status code\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400, 401, 500])\r",
+							"})\r",
+							"\r",
+							"pm.response.code === 201 && pm.test(\"it should respond with valid properties of a product\", () => {\r",
+							"    pm.expect(response.message).to.equal(\"Success\");\r",
+							"    pm.expect(response).to.have.property(\"product\");\r",
+							"    pm.expect(response).to.be.a(\"object\")\r",
+							"    pm.expect(response.product).to.have.all.keys(\"id\", \"name\", \"quantity\", \"price\", \"createdBy\", \"createdAt\", \"updatedAt\")\r",
+							"\r",
+							"// Store Product Id\r",
+							"    pm.collectionVariables.set(\"product_id\",response.product.id)\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.response.code == 401 && pm.test(\"it should respons `Access denied. No token provided.` if user doesn't send token\", () => {\r",
+							"    pm.response.to.have.status(401)\r",
+							"    pm.expect(authHeader).not.to.exist\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{user_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/products",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				},
+				"description": "### Add Product\n\nThis endpoint allows you to add a new product to the inventory.\n\n#### Request Body\n\n- `name` (string): The name of the product.\n- `price` (number): The price of the product.\n- `quantity` (number): The quantity of the product.\n- `userID` (string): The ID of the user adding the product.\n    \n\nExample:\n\n``` json\n{\n  \"name\": \"Sample Product\",\n  \"price\": 25.99,\n  \"quantity\": 100,\n  \"userID\": \"user123\"\n}\n\n ```\n\n#### Response\n\n- Status: 201 Created\n- Content-Type: application/json\n    \n\nExample:\n\n``` json\n{\n  \"message\": \"\",\n  \"product\": {\n    \"id\": \"generated_id\",\n    \"name\": \"Sample Product\",\n    \"quantity\": 100,\n    \"price\": 25.99,\n    \"createdBy\": \"user123\",\n    \"createdAt\": \"timestamp\",\n    \"updatedAt\": \"timestamp\"\n  }\n}\n\n ```"
+			},
+			"response": [
+				{
+					"name": "401 Unauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2f-ScLyqMBJaBy5Ex5VWs3mC1Ee3IU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:14:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Access denied. No token provided.\"\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "60"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3c-5z1G2syaDaZzYVbQo7qWVe8bpro\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"name, price, quantity, and userID are required\"\n}"
+				},
+				{
+					"name": "201 Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{$guid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "250"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"fa-OzYEO4y3/P0LGVkOYCZBlL9b+tk\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:32:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Success\",\n    \"product\": {\n        \"id\": \"6768a135-8cd9-4618-82a4-0e668f88281f\",\n        \"name\": \"Chips\",\n        \"quantity\": 100,\n        \"price\": 521.7,\n        \"createdBy\": \"112b155e-e785-4bcb-86e1-259333cabd3e\",\n        \"createdAt\": \"2024-02-10T11:32:08.812Z\",\n        \"updatedAt\": \"2024-02-10T11:32:08.812Z\"\n    }\n}"
+				},
+				{
+					"name": "500 Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{$guid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"31-QwdGUY+ErPfwfhKDtIxtJ0jWKmc\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 11:53:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Request failed with status code 500\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get product [product_id]",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.test(\"it should response 200 or 404 status code\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])\r",
+							"});\r",
+							"\r",
+							"pm.test(\"it should have product property if status code 200\", () => {\r",
+							"    pm.expect(response).to.have.property(\"product\")\r",
+							"})\r",
+							"\r",
+							"pm.response.code ===404 && pm.test(\"it should not have product propery if status code 404\", () => {\r",
+							"    pm.expect(response.message).to.be.eql(\"Product Not Found\")\r",
+							"        pm.expect(response).to.not.have.property(\"product\")\r",
+							"    \r",
+							"})\r",
+							"\r",
+							"pm.test(\"it should have message property\", () => {\r",
+							"    pm.expect(response).to.have.property(\"message\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"message should be string type\", () => {\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/products/:productId",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						":productId"
+					],
+					"variable": [
+						{
+							"key": "productId",
+							"value": "{{product_id}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products/:productId",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "249"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f9-6bB13bngtpGVET9d2DlE/vBbsUA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 12:24:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Success\",\n    \"product\": {\n        \"id\": \"abbbd318-2388-430b-bc81-df360f38376b\",\n        \"name\": \"Hat\",\n        \"quantity\": 891,\n        \"price\": 294.07,\n        \"createdBy\": \"c4bbddcb-4cea-4cad-8b4b-87663ad5d831\",\n        \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n        \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Product [product_id]",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response=pm.response.json()\r",
+							"const authHeader=pm.request.headers.get(\"Authorization\")\r",
+							"\r",
+							"pm.test(\"it should response 200 status code\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"it should have expected properties\",()=>{\r",
+							"    pm.expect(response).to.have.all.keys(\"message\",\"product\")\r",
+							"    pm.expect(response.product).to.have.all.keys(\"id\",\"name\",\"quantity\",\"price\",\"createdBy\",\"createdAt\", \"updatedAt\")\r",
+							"})\r",
+							"\r",
+							"pm.response.code===404 && pm.test(\"it should response 'Product not found' message if there are no product\",()=>{\r",
+							"    pm.expect(response).not.to.have.property(\"products\")\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"    pm.expect(response.message).to.be.equal(\"Product not found\")\r",
+							"})\r",
+							"\r",
+							"!authHeader && pm.test(\"it should respons `Access denied. No token provided.` if user doesn't send token\", () => {\r",
+							"    pm.response.to.have.status(401)\r",
+							"    pm.expect(authHeader).not.to.exist\r",
+							"    pm.expect(response.message).to.be.equal(\"Access denied. No token provided.\")\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/products/:productId",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						":productId"
+					],
+					"variable": [
+						{
+							"key": "productId",
+							"value": "{{product_id}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5750"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1676-OGBklgitLKk5JxTufzxnJASkGRk\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 12:25:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Success\",\n    \"products\": [\n        {\n            \"id\": \"721f48fd-16e6-4453-8c03-072f8eeaa17d\",\n            \"name\": \"Cheese\",\n            \"quantity\": 334,\n            \"price\": 102.07,\n            \"createdBy\": \"a3740372-f2f6-4c8f-b303-6a97ccae70f4\",\n            \"createdAt\": \"2024-02-10T11:18:51.854Z\",\n            \"updatedAt\": \"2024-02-10T11:18:51.854Z\"\n        },\n        {\n            \"id\": \"6152f668-427c-47db-85e2-e87f748ffccd\",\n            \"name\": \"Chicken\",\n            \"quantity\": 428,\n            \"price\": 647.94,\n            \"createdBy\": \"a1d9dce7-e874-4428-b630-82102f2e258e\",\n            \"createdAt\": \"2024-02-10T11:20:03.904Z\",\n            \"updatedAt\": \"2024-02-10T11:20:03.904Z\"\n        },\n        {\n            \"id\": \"aa265728-ed66-47f8-a2ec-97cc79093d78\",\n            \"name\": \"Keyboard\",\n            \"quantity\": 171,\n            \"price\": 433.87,\n            \"createdBy\": \"2a2406f8-ff85-44f4-83d9-b7fae89c4335\",\n            \"createdAt\": \"2024-02-10T11:20:18.248Z\",\n            \"updatedAt\": \"2024-02-10T11:20:18.248Z\"\n        },\n        {\n            \"id\": \"c17b3291-bf43-4c91-88cb-a92e79da1892\",\n            \"name\": \"Car\",\n            \"quantity\": 500,\n            \"price\": 566.77,\n            \"createdBy\": \"17b6aaa8-d252-4110-8229-5915e39a57f8\",\n            \"createdAt\": \"2024-02-10T11:20:35.260Z\",\n            \"updatedAt\": \"2024-02-10T11:20:35.260Z\"\n        },\n        {\n            \"id\": \"b7737c4b-162f-416e-8e34-d4f152d8f930\",\n            \"name\": \"Cheese\",\n            \"quantity\": 790,\n            \"price\": 849.6,\n            \"createdBy\": \"c53c476a-48c7-4d6c-b192-8c964cf05b96\",\n            \"createdAt\": \"2024-02-10T11:23:57.620Z\",\n            \"updatedAt\": \"2024-02-10T11:23:57.620Z\"\n        },\n        {\n            \"id\": \"79439494-8e0e-4a12-8774-c924d94761ff\",\n            \"name\": \"Tuna\",\n            \"quantity\": 422,\n            \"price\": 722.3,\n            \"createdBy\": \"12657204-39cb-486d-9b82-9d6695eabc24\",\n            \"createdAt\": \"2024-02-10T11:30:22.395Z\",\n            \"updatedAt\": \"2024-02-10T11:30:22.395Z\"\n        },\n        {\n            \"id\": \"6768a135-8cd9-4618-82a4-0e668f88281f\",\n            \"name\": \"Chips\",\n            \"quantity\": 100,\n            \"price\": 521.7,\n            \"createdBy\": \"112b155e-e785-4bcb-86e1-259333cabd3e\",\n            \"createdAt\": \"2024-02-10T11:32:08.812Z\",\n            \"updatedAt\": \"2024-02-10T11:32:08.812Z\"\n        },\n        {\n            \"id\": \"a58c545c-a8aa-4003-af07-f841e8e1b6c2\",\n            \"name\": \"Ball\",\n            \"quantity\": 134,\n            \"price\": 948.01,\n            \"createdBy\": \"df73e6a1-3405-4906-9a38-548b6fc522ae\",\n            \"createdAt\": \"2024-02-10T11:32:35.887Z\",\n            \"updatedAt\": \"2024-02-10T11:32:35.887Z\"\n        },\n        {\n            \"id\": \"697a0147-d111-4805-b2ec-f6d82efca857\",\n            \"name\": \"Cheese\",\n            \"quantity\": 683,\n            \"price\": 548.73,\n            \"createdBy\": \"4acb08a6-2d54-43ff-a737-af9b0fb83da0\",\n            \"createdAt\": \"2024-02-10T11:33:00.488Z\",\n            \"updatedAt\": \"2024-02-10T11:33:00.488Z\"\n        },\n        {\n            \"id\": \"afb4b546-1d6f-4da3-bec0-0bccf6e30616\",\n            \"name\": \"Soap\",\n            \"quantity\": 581,\n            \"price\": 189.25,\n            \"createdBy\": \"4e4f8c42-efc0-4a90-a187-a6076dc1e132\",\n            \"createdAt\": \"2024-02-10T11:33:46.440Z\",\n            \"updatedAt\": \"2024-02-10T11:33:46.440Z\"\n        },\n        {\n            \"id\": \"bb8707bf-2b54-4cca-9ba2-27c30450b200\",\n            \"name\": \"Gloves\",\n            \"quantity\": 803,\n            \"price\": 623.45,\n            \"createdBy\": \"b7e8ddf4-c34f-4a5e-9e62-5c236811bd45\",\n            \"createdAt\": \"2024-02-10T11:34:11.457Z\",\n            \"updatedAt\": \"2024-02-10T11:34:11.457Z\"\n        },\n        {\n            \"id\": \"99336de4-3ae1-4b62-b823-5c82968cfcf1\",\n            \"name\": \"Pizza\",\n            \"quantity\": 360,\n            \"price\": 43.11,\n            \"createdBy\": \"f3f47fec-986e-4da2-9235-5ad3549d6aa8\",\n            \"createdAt\": \"2024-02-10T11:34:26.651Z\",\n            \"updatedAt\": \"2024-02-10T11:34:26.651Z\"\n        },\n        {\n            \"id\": \"0fe25ca3-c74e-4879-af1f-83b3bde3a2b5\",\n            \"name\": \"Fish\",\n            \"quantity\": 608,\n            \"price\": 872.92,\n            \"createdBy\": \"5192b38b-ae89-478e-9e9b-a736d9c2a556\",\n            \"createdAt\": \"2024-02-10T11:34:58.751Z\",\n            \"updatedAt\": \"2024-02-10T11:34:58.751Z\"\n        },\n        {\n            \"id\": \"a21ba94f-8cee-479b-82fa-6551b78ac4b9\",\n            \"name\": \"Towels\",\n            \"quantity\": 407,\n            \"price\": 416.21,\n            \"createdBy\": \"7ea4fc8b-97e0-4136-b4b1-eadd099271b3\",\n            \"createdAt\": \"2024-02-10T11:35:04.150Z\",\n            \"updatedAt\": \"2024-02-10T11:35:04.150Z\"\n        },\n        {\n            \"id\": \"aa1c0cfa-3bb5-4ad9-adf0-09b48b396a59\",\n            \"name\": \"Keyboard\",\n            \"quantity\": 948,\n            \"price\": 462.29,\n            \"createdBy\": \"5e49746e-051e-4a04-a437-dbe0cd406d8c\",\n            \"createdAt\": \"2024-02-10T11:35:09.637Z\",\n            \"updatedAt\": \"2024-02-10T11:35:09.637Z\"\n        },\n        {\n            \"id\": \"32c66f72-47af-445f-8884-7677011689d8\",\n            \"name\": \"Towels\",\n            \"quantity\": 508,\n            \"price\": 685.84,\n            \"createdBy\": \"ecda356b-767d-4ec5-aa8a-ed9fb7401ae4\",\n            \"createdAt\": \"2024-02-10T11:35:23.334Z\",\n            \"updatedAt\": \"2024-02-10T11:35:23.334Z\"\n        },\n        {\n            \"id\": \"53454d2f-898a-478b-ac47-9a697aacc6b4\",\n            \"name\": \"Hat\",\n            \"quantity\": 235,\n            \"price\": 459.08,\n            \"createdBy\": \"de32c25a-361a-462c-94a0-eabd77cc8b6b\",\n            \"createdAt\": \"2024-02-10T11:35:53.832Z\",\n            \"updatedAt\": \"2024-02-10T11:35:53.832Z\"\n        },\n        {\n            \"id\": \"599e8e0e-f796-49e7-a37a-bb357746efdb\",\n            \"name\": \"Soap\",\n            \"quantity\": 370,\n            \"price\": 849.49,\n            \"createdBy\": \"0d2a6775-5399-43a9-ab5b-a2bc120897a2\",\n            \"createdAt\": \"2024-02-10T11:37:00.393Z\",\n            \"updatedAt\": \"2024-02-10T11:37:00.393Z\"\n        },\n        {\n            \"id\": \"dcb040fd-4d87-42d1-a606-43e3a19c565e\",\n            \"name\": \"Tuna\",\n            \"quantity\": 432,\n            \"price\": 798.26,\n            \"createdBy\": \"740bd431-5861-4a50-a00b-5cdc368522cb\",\n            \"createdAt\": \"2024-02-10T11:37:26.586Z\",\n            \"updatedAt\": \"2024-02-10T11:37:26.586Z\"\n        },\n        {\n            \"id\": \"5d7144ad-b5d2-44c2-89d6-7e8443ba6f9d\",\n            \"name\": \"Table\",\n            \"quantity\": 313,\n            \"price\": 782.04,\n            \"createdBy\": \"b7ecc19b-5298-4194-acee-0b57615c90a2\",\n            \"createdAt\": \"2024-02-10T11:38:02.291Z\",\n            \"updatedAt\": \"2024-02-10T11:38:02.291Z\"\n        },\n        {\n            \"id\": \"26f49ecc-275e-492d-97f6-5f2d0abcc59d\",\n            \"name\": \"Chips\",\n            \"quantity\": 632,\n            \"price\": 604.47,\n            \"createdBy\": \"c9d91ddc-47be-4863-bade-538ddc2c5389\",\n            \"createdAt\": \"2024-02-10T11:38:47.875Z\",\n            \"updatedAt\": \"2024-02-10T11:38:47.875Z\"\n        },\n        {\n            \"id\": \"b35044d2-0d0c-4610-a74a-b15558b87d31\",\n            \"name\": \"Chips\",\n            \"quantity\": 205,\n            \"price\": 156.89,\n            \"createdBy\": \"da96f304-92fd-4f13-b586-765cf9211863\",\n            \"createdAt\": \"2024-02-10T11:42:05.825Z\",\n            \"updatedAt\": \"2024-02-10T11:42:05.825Z\"\n        },\n        {\n            \"id\": \"926f8496-09f7-4f8d-a6a4-543c1f8ff98b\",\n            \"name\": \"Bike\",\n            \"quantity\": 770,\n            \"price\": 176.37,\n            \"createdBy\": \"475c6b75-4929-48fc-8ea5-5e16235d7e00\",\n            \"createdAt\": \"2024-02-10T11:43:23.695Z\",\n            \"updatedAt\": \"2024-02-10T11:43:23.695Z\"\n        },\n        {\n            \"id\": \"de3b7b6c-2852-455b-8875-3b1f1ab05a87\",\n            \"name\": \"Bacon\",\n            \"quantity\": 815,\n            \"price\": 41.87,\n            \"createdBy\": \"08def3e9-079f-444b-8f97-fafc35cbd267\",\n            \"createdAt\": \"2024-02-10T11:43:33.929Z\",\n            \"updatedAt\": \"2024-02-10T11:43:33.929Z\"\n        },\n        {\n            \"id\": \"1a53504c-c9be-4ee0-923c-416e348786ee\",\n            \"name\": \"Shirt\",\n            \"quantity\": 508,\n            \"price\": 812.29,\n            \"createdBy\": \"0ebb486f-8f6f-4720-86c6-1e229d1115fe\",\n            \"createdAt\": \"2024-02-10T11:53:00.769Z\",\n            \"updatedAt\": \"2024-02-10T11:53:00.769Z\"\n        },\n        {\n            \"id\": \"abbbd318-2388-430b-bc81-df360f38376b\",\n            \"name\": \"Hat\",\n            \"quantity\": 891,\n            \"price\": 294.07,\n            \"createdBy\": \"c4bbddcb-4cea-4cad-8b4b-87663ad5d831\",\n            \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n            \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Products",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.test(\"it Should have status code 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"it should response success message\", () => {\r",
+							"    pm.expect(response.message).to.equal(\"Success\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"it should response with product property\", () => {\r",
+							"    pm.expect(response).to.have.property(\"products\")\r",
+							"})\r",
+							"\r",
+							"response.products.length && pm.test(\"it should have expected products properties if products are present\", () => {\r",
+							"\r",
+							"    const product = response.products[0]\r",
+							"    pm.expect(product).to.have.property(\"id\")\r",
+							"    pm.expect(product).to.have.property(\"name\")\r",
+							"    // -----\r",
+							"    pm.expect(product).to.have.all.keys(\"id\", \"name\", \"quantity\", \"price\", \"createdBy\", \"createdAt\", \"updatedAt\")\r",
+							"\r",
+							"})\r",
+							"\r",
+							"!response.products.length && pm.test(\"it should have empty array if not products found\", () => {\r",
+							"    console.log(\"products\")\r",
+							"    pm.expect(response.products).to.be.empty\r",
+							"})\r",
+							"\r",
+							"\r",
+							"// Visualizer\r",
+							"var template = `\r",
+							"<table>\r",
+							"    <tr style=\"background:blue; color: #fff\">\r",
+							"        <th>ID</th>\r",
+							"        <th>Name</th>\r",
+							"        <th>Quantity</th>\r",
+							"        <th>Price</th>\r",
+							"        <th>CreatedBy</th>\r",
+							"        <th>CreatedAt</th>\r",
+							"        <th>UpdatedAt</th>\r",
+							"    </tr>\r",
+							"\r",
+							"    {{#each response}}\r",
+							"        <tr>\r",
+							"            <td>{{id}}</td>\r",
+							"            <td>{{name}}</td>\r",
+							"            <td>{{quantity}}</td>\r",
+							"            <td>{{price}}</td>\r",
+							"            <td>{{createdBy}}</td>\r",
+							"            <td>{{createdAt}}</td>\r",
+							"            <td>{{updatedAt}}</td>\r",
+							"        </tr>\r",
+							"  {{/each}}\r",
+							"\r",
+							"</table>\r",
+							"`\r",
+							"\r",
+							"pm.visualizer.set(template, {response: pm.response.json().products});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{inventory_base_url}}/api/v1/products",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomProduct}}\",\r\n    \"price\": {{$randomPrice}},\r\n    \"quantity\": {{$randomInt}},\r\n    \"userID\": \"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_base_url}}/api/v1/products",
+							"host": [
+								"{{inventory_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5750"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1676-OGBklgitLKk5JxTufzxnJASkGRk\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 12:25:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Success\",\n    \"products\": [\n        {\n            \"id\": \"721f48fd-16e6-4453-8c03-072f8eeaa17d\",\n            \"name\": \"Cheese\",\n            \"quantity\": 334,\n            \"price\": 102.07,\n            \"createdBy\": \"a3740372-f2f6-4c8f-b303-6a97ccae70f4\",\n            \"createdAt\": \"2024-02-10T11:18:51.854Z\",\n            \"updatedAt\": \"2024-02-10T11:18:51.854Z\"\n        },\n        {\n            \"id\": \"6152f668-427c-47db-85e2-e87f748ffccd\",\n            \"name\": \"Chicken\",\n            \"quantity\": 428,\n            \"price\": 647.94,\n            \"createdBy\": \"a1d9dce7-e874-4428-b630-82102f2e258e\",\n            \"createdAt\": \"2024-02-10T11:20:03.904Z\",\n            \"updatedAt\": \"2024-02-10T11:20:03.904Z\"\n        },\n        {\n            \"id\": \"aa265728-ed66-47f8-a2ec-97cc79093d78\",\n            \"name\": \"Keyboard\",\n            \"quantity\": 171,\n            \"price\": 433.87,\n            \"createdBy\": \"2a2406f8-ff85-44f4-83d9-b7fae89c4335\",\n            \"createdAt\": \"2024-02-10T11:20:18.248Z\",\n            \"updatedAt\": \"2024-02-10T11:20:18.248Z\"\n        },\n        {\n            \"id\": \"c17b3291-bf43-4c91-88cb-a92e79da1892\",\n            \"name\": \"Car\",\n            \"quantity\": 500,\n            \"price\": 566.77,\n            \"createdBy\": \"17b6aaa8-d252-4110-8229-5915e39a57f8\",\n            \"createdAt\": \"2024-02-10T11:20:35.260Z\",\n            \"updatedAt\": \"2024-02-10T11:20:35.260Z\"\n        },\n        {\n            \"id\": \"b7737c4b-162f-416e-8e34-d4f152d8f930\",\n            \"name\": \"Cheese\",\n            \"quantity\": 790,\n            \"price\": 849.6,\n            \"createdBy\": \"c53c476a-48c7-4d6c-b192-8c964cf05b96\",\n            \"createdAt\": \"2024-02-10T11:23:57.620Z\",\n            \"updatedAt\": \"2024-02-10T11:23:57.620Z\"\n        },\n        {\n            \"id\": \"79439494-8e0e-4a12-8774-c924d94761ff\",\n            \"name\": \"Tuna\",\n            \"quantity\": 422,\n            \"price\": 722.3,\n            \"createdBy\": \"12657204-39cb-486d-9b82-9d6695eabc24\",\n            \"createdAt\": \"2024-02-10T11:30:22.395Z\",\n            \"updatedAt\": \"2024-02-10T11:30:22.395Z\"\n        },\n        {\n            \"id\": \"6768a135-8cd9-4618-82a4-0e668f88281f\",\n            \"name\": \"Chips\",\n            \"quantity\": 100,\n            \"price\": 521.7,\n            \"createdBy\": \"112b155e-e785-4bcb-86e1-259333cabd3e\",\n            \"createdAt\": \"2024-02-10T11:32:08.812Z\",\n            \"updatedAt\": \"2024-02-10T11:32:08.812Z\"\n        },\n        {\n            \"id\": \"a58c545c-a8aa-4003-af07-f841e8e1b6c2\",\n            \"name\": \"Ball\",\n            \"quantity\": 134,\n            \"price\": 948.01,\n            \"createdBy\": \"df73e6a1-3405-4906-9a38-548b6fc522ae\",\n            \"createdAt\": \"2024-02-10T11:32:35.887Z\",\n            \"updatedAt\": \"2024-02-10T11:32:35.887Z\"\n        },\n        {\n            \"id\": \"697a0147-d111-4805-b2ec-f6d82efca857\",\n            \"name\": \"Cheese\",\n            \"quantity\": 683,\n            \"price\": 548.73,\n            \"createdBy\": \"4acb08a6-2d54-43ff-a737-af9b0fb83da0\",\n            \"createdAt\": \"2024-02-10T11:33:00.488Z\",\n            \"updatedAt\": \"2024-02-10T11:33:00.488Z\"\n        },\n        {\n            \"id\": \"afb4b546-1d6f-4da3-bec0-0bccf6e30616\",\n            \"name\": \"Soap\",\n            \"quantity\": 581,\n            \"price\": 189.25,\n            \"createdBy\": \"4e4f8c42-efc0-4a90-a187-a6076dc1e132\",\n            \"createdAt\": \"2024-02-10T11:33:46.440Z\",\n            \"updatedAt\": \"2024-02-10T11:33:46.440Z\"\n        },\n        {\n            \"id\": \"bb8707bf-2b54-4cca-9ba2-27c30450b200\",\n            \"name\": \"Gloves\",\n            \"quantity\": 803,\n            \"price\": 623.45,\n            \"createdBy\": \"b7e8ddf4-c34f-4a5e-9e62-5c236811bd45\",\n            \"createdAt\": \"2024-02-10T11:34:11.457Z\",\n            \"updatedAt\": \"2024-02-10T11:34:11.457Z\"\n        },\n        {\n            \"id\": \"99336de4-3ae1-4b62-b823-5c82968cfcf1\",\n            \"name\": \"Pizza\",\n            \"quantity\": 360,\n            \"price\": 43.11,\n            \"createdBy\": \"f3f47fec-986e-4da2-9235-5ad3549d6aa8\",\n            \"createdAt\": \"2024-02-10T11:34:26.651Z\",\n            \"updatedAt\": \"2024-02-10T11:34:26.651Z\"\n        },\n        {\n            \"id\": \"0fe25ca3-c74e-4879-af1f-83b3bde3a2b5\",\n            \"name\": \"Fish\",\n            \"quantity\": 608,\n            \"price\": 872.92,\n            \"createdBy\": \"5192b38b-ae89-478e-9e9b-a736d9c2a556\",\n            \"createdAt\": \"2024-02-10T11:34:58.751Z\",\n            \"updatedAt\": \"2024-02-10T11:34:58.751Z\"\n        },\n        {\n            \"id\": \"a21ba94f-8cee-479b-82fa-6551b78ac4b9\",\n            \"name\": \"Towels\",\n            \"quantity\": 407,\n            \"price\": 416.21,\n            \"createdBy\": \"7ea4fc8b-97e0-4136-b4b1-eadd099271b3\",\n            \"createdAt\": \"2024-02-10T11:35:04.150Z\",\n            \"updatedAt\": \"2024-02-10T11:35:04.150Z\"\n        },\n        {\n            \"id\": \"aa1c0cfa-3bb5-4ad9-adf0-09b48b396a59\",\n            \"name\": \"Keyboard\",\n            \"quantity\": 948,\n            \"price\": 462.29,\n            \"createdBy\": \"5e49746e-051e-4a04-a437-dbe0cd406d8c\",\n            \"createdAt\": \"2024-02-10T11:35:09.637Z\",\n            \"updatedAt\": \"2024-02-10T11:35:09.637Z\"\n        },\n        {\n            \"id\": \"32c66f72-47af-445f-8884-7677011689d8\",\n            \"name\": \"Towels\",\n            \"quantity\": 508,\n            \"price\": 685.84,\n            \"createdBy\": \"ecda356b-767d-4ec5-aa8a-ed9fb7401ae4\",\n            \"createdAt\": \"2024-02-10T11:35:23.334Z\",\n            \"updatedAt\": \"2024-02-10T11:35:23.334Z\"\n        },\n        {\n            \"id\": \"53454d2f-898a-478b-ac47-9a697aacc6b4\",\n            \"name\": \"Hat\",\n            \"quantity\": 235,\n            \"price\": 459.08,\n            \"createdBy\": \"de32c25a-361a-462c-94a0-eabd77cc8b6b\",\n            \"createdAt\": \"2024-02-10T11:35:53.832Z\",\n            \"updatedAt\": \"2024-02-10T11:35:53.832Z\"\n        },\n        {\n            \"id\": \"599e8e0e-f796-49e7-a37a-bb357746efdb\",\n            \"name\": \"Soap\",\n            \"quantity\": 370,\n            \"price\": 849.49,\n            \"createdBy\": \"0d2a6775-5399-43a9-ab5b-a2bc120897a2\",\n            \"createdAt\": \"2024-02-10T11:37:00.393Z\",\n            \"updatedAt\": \"2024-02-10T11:37:00.393Z\"\n        },\n        {\n            \"id\": \"dcb040fd-4d87-42d1-a606-43e3a19c565e\",\n            \"name\": \"Tuna\",\n            \"quantity\": 432,\n            \"price\": 798.26,\n            \"createdBy\": \"740bd431-5861-4a50-a00b-5cdc368522cb\",\n            \"createdAt\": \"2024-02-10T11:37:26.586Z\",\n            \"updatedAt\": \"2024-02-10T11:37:26.586Z\"\n        },\n        {\n            \"id\": \"5d7144ad-b5d2-44c2-89d6-7e8443ba6f9d\",\n            \"name\": \"Table\",\n            \"quantity\": 313,\n            \"price\": 782.04,\n            \"createdBy\": \"b7ecc19b-5298-4194-acee-0b57615c90a2\",\n            \"createdAt\": \"2024-02-10T11:38:02.291Z\",\n            \"updatedAt\": \"2024-02-10T11:38:02.291Z\"\n        },\n        {\n            \"id\": \"26f49ecc-275e-492d-97f6-5f2d0abcc59d\",\n            \"name\": \"Chips\",\n            \"quantity\": 632,\n            \"price\": 604.47,\n            \"createdBy\": \"c9d91ddc-47be-4863-bade-538ddc2c5389\",\n            \"createdAt\": \"2024-02-10T11:38:47.875Z\",\n            \"updatedAt\": \"2024-02-10T11:38:47.875Z\"\n        },\n        {\n            \"id\": \"b35044d2-0d0c-4610-a74a-b15558b87d31\",\n            \"name\": \"Chips\",\n            \"quantity\": 205,\n            \"price\": 156.89,\n            \"createdBy\": \"da96f304-92fd-4f13-b586-765cf9211863\",\n            \"createdAt\": \"2024-02-10T11:42:05.825Z\",\n            \"updatedAt\": \"2024-02-10T11:42:05.825Z\"\n        },\n        {\n            \"id\": \"926f8496-09f7-4f8d-a6a4-543c1f8ff98b\",\n            \"name\": \"Bike\",\n            \"quantity\": 770,\n            \"price\": 176.37,\n            \"createdBy\": \"475c6b75-4929-48fc-8ea5-5e16235d7e00\",\n            \"createdAt\": \"2024-02-10T11:43:23.695Z\",\n            \"updatedAt\": \"2024-02-10T11:43:23.695Z\"\n        },\n        {\n            \"id\": \"de3b7b6c-2852-455b-8875-3b1f1ab05a87\",\n            \"name\": \"Bacon\",\n            \"quantity\": 815,\n            \"price\": 41.87,\n            \"createdBy\": \"08def3e9-079f-444b-8f97-fafc35cbd267\",\n            \"createdAt\": \"2024-02-10T11:43:33.929Z\",\n            \"updatedAt\": \"2024-02-10T11:43:33.929Z\"\n        },\n        {\n            \"id\": \"1a53504c-c9be-4ee0-923c-416e348786ee\",\n            \"name\": \"Shirt\",\n            \"quantity\": 508,\n            \"price\": 812.29,\n            \"createdBy\": \"0ebb486f-8f6f-4720-86c6-1e229d1115fe\",\n            \"createdAt\": \"2024-02-10T11:53:00.769Z\",\n            \"updatedAt\": \"2024-02-10T11:53:00.769Z\"\n        },\n        {\n            \"id\": \"abbbd318-2388-430b-bc81-df360f38376b\",\n            \"name\": \"Hat\",\n            \"quantity\": 891,\n            \"price\": 294.07,\n            \"createdBy\": \"c4bbddcb-4cea-4cad-8b4b-87663ad5d831\",\n            \"createdAt\": \"2024-02-10T12:24:20.384Z\",\n            \"updatedAt\": \"2024-02-10T12:24:20.384Z\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "dayjs_library",
+			"value": ""
+		},
+		{
+			"key": "product_id",
+			"value": ""
+		}
+	]
+}

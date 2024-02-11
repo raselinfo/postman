@@ -1,0 +1,1050 @@
+{
+	"info": {
+		"_postman_id": "c39bfd0e-c3d4-46d3-ae65-f269eeab3c51",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32401078",
+		"_collection_link": "https://dark-comet-962105.postman.co/workspace/toto-company~e4cc4e92-29fb-4ee3-b611-772e6cd9a6f6/collection/32401078-c39bfd0e-c3d4-46d3-ae65-f269eeab3c51?action=share&source=collection_link&creator=32401078"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response=pm.response.json()\r",
+							"\r",
+							"pm.test(\"it should respond valid status code\",()=>{\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,500])\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"it should response 'Your server is healthy' message\",()=>{\r",
+							"    pm.expect(response).to.be.have.property(\"message\")\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"    pm.expect(response.message).to.be.equal(\"Your server is healthy\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{auth_base_url}}/api/v1/health",
+					"host": [
+						"{{auth_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const requestBody=JSON.parse(pm.request.body.raw)\r",
+							"\r",
+							"pm.test(\"it should respond valid status code\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400, 409, 500]);\r",
+							"});\r",
+							"\r",
+							"pm.response.code === 201 && pm.test(\"it should respond expected properties if user created\", () => {\r",
+							"    pm.expect(response.message).to.be.equal(\"User created successfully\");\r",
+							"    pm.expect(response.links.signIn).to.be.equal(\"${BASE_URL}/api/v1/signin\");\r",
+							"\r",
+							"    pm.expect(response).to.have.all.keys(\"message\", \"links\");\r",
+							"    pm.expect(response.links).to.have.property(\"signIn\");\r",
+							"\r",
+							"    pm.expect(response.message).to.be.a(\"string\");\r",
+							"    pm.expect(response.links).to.be.a(\"object\");\r",
+							"    pm.expect(response.links.signIn).to.be.a(\"string\");\r",
+							"\r",
+							"    // Store Email\r",
+							"    pm.collectionVariables.set(\"email\",requestBody.email)\r",
+							"    pm.environment.set(\"password\",requestBody.password)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.response.code === 400 && pm.test(\"it should respond 400 bad request if the request body invalid\", () => {\r",
+							"    pm.expect(response.message).to.be.a(\"string\");\r",
+							"    pm.expect(response).to.have.property(\"message\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.response.code === 409 && pm.test(\"it should respond 409 conflicts if the email is a duplicate\", () => {\r",
+							"    pm.expect(response.message).to.be.a(\"string\");\r",
+							"    pm.expect(response).to.have.property(\"message\");\r",
+							"    pm.expect(response.message).to.be.equal(\"Email already exists!\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// {\r\n//     \"name\": \"{{$randomFullName}}\",\r\n//     \"email\": \"{{$randomExampleEmail}}\",\r\n//     \"password\": \"{{$randomPassword}}\"\r\n// }\r\n\r\n{\r\n    \"name\": \"Rasel\",\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{auth_base_url}}/api/v1/signup",
+					"host": [
+						"{{auth_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"signup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"rasel\",\r\n    \"email\": \"rasel2@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/v1/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"v1",
+								"signup"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "86"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"56-YnAmLys77c3LkIjUnWHHMIOtPy8\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 09 Feb 2024 17:10:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User created successfully\",\n    \"links\": {\n        \"signIn\": \"${BASE_URL}/api/v1/signin\"\n    }\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/v1/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"v1",
+								"signup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "51"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"33-SxofoYsOaMc+cCZ1H9uTraPojjU\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 09 Feb 2024 17:06:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Name, Email and Password is required!\"\n}"
+				},
+				{
+					"name": "409 Conflict",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"rasel\",\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/v1/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"v1",
+								"signup"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"23-y/Pccg7m/qPT6WkG4DVdNzGKsNU\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 09 Feb 2024 17:09:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Email already exists!\"\n}"
+				},
+				{
+					"name": "500 Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/v1/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"v1",
+								"signup"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Internal Server Error\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.test(\"it shuld respond valid code\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400,401, 404,500])\r",
+							"})\r",
+							"\r",
+							"pm.response.code===200 && pm.test(\"it should response token\", () => {\r",
+							"    pm.expect(response.token).to.be.a(\"string\")\r",
+							"    pm.expect(response).to.be.have.property(\"token\")\r",
+							"\r",
+							"    // Store Access Token \r",
+							"    pm.environment.set(\"access_token\",response.token)\r",
+							"    pm.environment.set(\"user_id\",response.userId)\r",
+							"    \r",
+							"})\r",
+							"\r",
+							"pm.response.code === 404 && pm.test(\"it should response 'User not found!' message if user send wrong email\", () => {\r",
+							"\r",
+							"    pm.expect(response.message).to.be.a(\"string\"),\r",
+							"        pm.expect(response.message).to.be.equal(\"User not found!\")\r",
+							"    pm.expect(response).to.be.have.property(\"message\")\r",
+							"    pm.expect(response).to.not.be.have.property(\"token\")\r",
+							"\r",
+							"})\r",
+							"\r",
+							"pm.response.code === 401 && pm.test(\"it should response 'Password is incorrect' message if user send wrong password\", () => {\r",
+							"\r",
+							"    pm.expect(response.message).to.be.a(\"string\"),\r",
+							"        pm.expect(response.message).to.be.equal(\"Password is incorrect!\")\r",
+							"    pm.expect(response).to.be.have.property(\"message\")\r",
+							"    // pm.expect(response).to.not.be.have.property(\"token\")\r",
+							"\r",
+							"})\r",
+							"\r",
+							"pm.response.code ===500 && pm.test(\"it should response 500 status code if there internal server error\",()=>{\r",
+							"        pm.expect(response.message).to.be.a(\"string\"),\r",
+							"        pm.expect(response.message).to.be.equal(\"Internal Server Error\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{auth_base_url}}/api/v1/signin",
+					"host": [
+						"{{auth_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"signin"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/signin",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"signin"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "277"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"115-hlJtGmyJGipj4uRYppqnXOAt54w\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:25:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"jwt-token\"\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/signin",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"signin"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2d-NjAG65/bbAFcZPSHyDPPBrkyzoA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:25:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Email and Password is required!\"\n}"
+				},
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rasel@example.com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/signin",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"signin"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "29"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1d-QBO3n2KR+AbWHh2cmvMh+7ruNHY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:28:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User not found!\"\n}"
+				},
+				{
+					"name": "500 Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/signin",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"signin"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Internal Server Error\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Checkpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const authHeader = pm.request.headers.get(\"Authorization\")\r",
+							"\r",
+							"pm.test(\"it should respond valid status code\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 401, 500])\r",
+							"})\r",
+							"\r",
+							"pm.response.code === 200 && pm.test(\"it should response `Access granted` message\", () => {\r",
+							"    pm.expect(response).to.be.have.property(\"message\")\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"    pm.expect(response.message).to.be.eql(\"Access granted\")\r",
+							"})\r",
+							"\r",
+							"pm.response.code === 401 && pm.test(\"it should respond `Access denied. No token provided.` if user doesn't send token\", () => {\r",
+							"    pm.response.to.have.status(401)\r",
+							"    pm.expect(authHeader).not.to.exist\r",
+							"    pm.expect(response.message).to.be.equal(\"Access denied. No token provided.\")\r",
+							"})\r",
+							"\r",
+							"pm.response.code === 500 && pm.test(\"it should response 500 status code if there internal server error\", () => {\r",
+							"    pm.expect(response.message).to.be.a(\"string\")\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{auth_base_url}}/api/v1/checkpoint",
+					"host": [
+						"{{auth_base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"checkpoint"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/checkpoint",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checkpoint"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1c-YlGPie9YmkmzDwWJ0Jg3YD/S5jg\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:58:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Access granted\"\n}"
+				},
+				{
+					"name": "401 Unauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/checkpoint",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checkpoint"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2f-ScLyqMBJaBy5Ex5VWs3mC1Ee3IU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:58:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Access denied. No token provided.\"\n}"
+				},
+				{
+					"name": "500 Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rasel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/api/v1/checkpoint",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checkpoint"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1b-CgdsrqtkLn0qBSLU/p4pPCfLVik\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 10 Feb 2024 10:47:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"jwt malformed\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "IYdzPTaJzfBUmYtOYLd3Ahq34b5_LvyUYmsm3JoDQm4k7x3B2PjEsqwEfH6jAg4p",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "yHpmDs1jPOc9OkGbYK3HF2lNMlJ2oess",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://dev-mh5yy0530kzifbg6.us.auth0.com/oauth/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://dev-mh5yy0530kzifbg6.us.auth0.com/oauth/authorize",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "refreshRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "authRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "email",
+			"value": ""
+		}
+	]
+}
